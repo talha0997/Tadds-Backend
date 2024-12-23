@@ -179,29 +179,20 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Trim password to rule out any leading or trailing spaces
-    const trimmedPassword = password.trim();
-    console.log('Provided password (plain text):', trimmedPassword);
-    console.log('Stored hashed password from DB:', employee.password);
-
-    // Compare the plain password with the hashed password
-    const isMatch = await bcrypt.compare(trimmedPassword, employee.password);
-    console.log('Password comparison result:', isMatch);  // Log the result of bcrypt.compare()
-
-    if (!isMatch) {
-      console.log('Password mismatch');
+     // Compare the plain text password directly
+     if (employee.password !== password) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     // If the password matches, generate a token
     const token = jwt.sign({ id: employee._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
     return res.status(200).json({ success: true, token, employee });
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 });
-
 // Get all employees
 router.get('/', async (req, res) => {
   try {

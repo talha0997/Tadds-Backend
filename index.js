@@ -31,5 +31,5 @@ app.use('/api/attendance', attendanceRoutes)
 app.use('/api', candidateRoutes);
 app.use('/api/evaluations', evaluationRoutes);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
